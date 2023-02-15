@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.2](https://github.com/xuanxiaoqian/create-quick/compare/v1.2.1...v1.2.2) (2023-02-15)
+
+
+### Bug Fixes
+
+* 修复入口文件index.ts读取templates 从 './templates' 至 path.resolve(__dirname, './templates') ([a6fd7c9](https://github.com/xuanxiaoqian/create-quick/commit/a6fd7c9befddfe1fd24869760466d1c2a5441a3d))
+
 ### [1.2.1](https://github.com/xuanxiaoqian/create-quick/compare/v1.2.0...v1.2.1) (2023-02-15)
 
 
