@@ -8615,7 +8615,7 @@ var handleOptions = (data) => {
 var argv = (0, import_minimist.default)(process.argv.slice(2), { string: ["_"] });
 var projectName = argv._[0];
 var defaultProjectName = projectName ? projectName : "test-project";
-var templatesData = readJsonFile(import_path3.default.join(__dirname, "./templatesData.json"));
+var templatesData = readJsonFile(import_path3.default.resolve(__dirname, "./templatesData.json"));
 var promptsOptions = handleOptions(templatesData);
 var promptsArray = [
   {
