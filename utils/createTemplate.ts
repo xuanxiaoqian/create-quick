@@ -34,7 +34,11 @@ export const createTemplate = (
   initOptionsEjsData(curOptions, { ejsVarAilas: ejsVarAilas, ejsData })
 
   //copy optionsDir and ejsData
-  options.map((item) => {
+  options?.map((item) => {
+    if (!fs.existsSync(path.join(curOptions, item))) {
+      return false
+    }
+
     fse.copySync(path.join(curOptions, item), newProjectPath, {
       filter(src, dest) {
         const basename = path.basename(src)
@@ -88,6 +92,10 @@ const renderBase = (curBase: string, newProjectPath: string) => {
 
 // 递归初始化ejs的值,防止ejs模板undefind报错
 const initOptionsEjsData = (targetPath: string, config: { ejsVarAilas: string; ejsData: any }) => {
+  if (!fs.existsSync(targetPath)) {
+    return false
+  }
+
   const { ejsVarAilas, ejsData } = config
 
   recursionDir(targetPath, (data) => {
@@ -105,6 +113,10 @@ const initOptionsEjsData = (targetPath: string, config: { ejsVarAilas: string; e
 
 // 递归渲染ejs
 const renderEjs = (targetPath: string, newPath: string, config: { ejsData: any }) => {
+  if (!fs.existsSync(targetPath)) {
+    return false
+  }
+
   const { ejsData } = config
   recursionDir(targetPath, (data) => {
     const basename = path.basename(data.path)

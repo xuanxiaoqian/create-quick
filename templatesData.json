@@ -1,0 +1,23 @@
+{
+  "vue3": {
+    "title": "vue3 + vue-router",
+    "options": [
+      {
+        "title": "pinia状态管理",
+        "value": "pinia"
+      },
+      {
+        "title": "prettier格式化",
+        "value": "prettier"
+      },
+      {
+        "title": "vue-router路由",
+        "value": "vue-router"
+      }
+    ]
+  },
+  "uniapp-vue3": {
+    "title": "uniapp的vue3版本",
+    "options": []
+  }
+}

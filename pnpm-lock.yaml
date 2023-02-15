@@ -3,7 +3,9 @@ lockfileVersion: 5.4
 specifiers:
   '@types/ejs': ^3.1.2
   '@types/fs-extra': ^11.0.1
+  '@types/minimist': ^1.2.2
   '@types/node': ^18.13.0
+  '@types/prompts': ^2.4.2
   commitizen: ^4.3.0
   cz-conventional-changelog: ^3.3.0
   ejs: ^3.1.8
@@ -11,7 +13,9 @@ specifiers:
   fs-extra: ^11.1.0
   husky: ^8.0.3
   lint-staged: ^13.1.2
+  minimist: ^1.2.8
   prettier: ^2.8.4
+  prompts: ^2.4.2
   standard-version: ^9.5.0
   typescript: ^4.9.5
   zx: ^7.1.1
@@ -19,7 +23,9 @@ specifiers:
 devDependencies:
   '@types/ejs': registry.npmmirror.com/@types/ejs/3.1.2
   '@types/fs-extra': registry.npmmirror.com/@types/fs-extra/11.0.1
+  '@types/minimist': registry.npmmirror.com/@types/minimist/1.2.2
   '@types/node': registry.npmmirror.com/@types/node/18.13.0
+  '@types/prompts': registry.npmmirror.com/@types/prompts/2.4.2
   commitizen: registry.npmmirror.com/commitizen/4.3.0
   cz-conventional-changelog: registry.npmmirror.com/cz-conventional-changelog/3.3.0
   ejs: registry.npmmirror.com/ejs/3.1.8
@@ -27,7 +33,9 @@ devDependencies:
   fs-extra: registry.npmmirror.com/fs-extra/11.1.0
   husky: registry.npmmirror.com/husky/8.0.3
   lint-staged: registry.npmmirror.com/lint-staged/13.1.2
+  minimist: registry.npmmirror.com/minimist/1.2.8
   prettier: registry.npmmirror.com/prettier/2.8.4
+  prompts: registry.npmmirror.com/prompts/2.4.2
   standard-version: registry.npmmirror.com/standard-version/9.5.0
   typescript: registry.npmmirror.com/typescript/4.9.5
   zx: registry.npmmirror.com/zx/7.1.1
@@ -518,6 +526,15 @@ packages:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/normalize-package-data/-/normalize-package-data-2.4.1.tgz}
     name: '@types/normalize-package-data'
     version: 2.4.1
+    dev: true
+
+  registry.npmmirror.com/@types/prompts/2.4.2:
+    resolution: {integrity: sha512-TwNx7qsjvRIUv/BCx583tqF5IINEVjCNqg9ofKHRlSoUHE62WBHrem4B1HGXcIrG511v29d1kJ9a/t2Esz7MIg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/prompts/-/prompts-2.4.2.tgz}
+    name: '@types/prompts'
+    version: 2.4.2
+    dependencies:
+      '@types/node': registry.npmmirror.com/@types/node/18.13.0
+      kleur: registry.npmmirror.com/kleur/3.0.3
     dev: true
 
   registry.npmmirror.com/@types/ps-tree/1.1.2:
@@ -2216,6 +2233,13 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
+  registry.npmmirror.com/kleur/3.0.3:
+    resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/kleur/-/kleur-3.0.3.tgz}
+    name: kleur
+    version: 3.0.3
+    engines: {node: '>=6'}
+    dev: true
+
   registry.npmmirror.com/lilconfig/2.0.6:
     resolution: {integrity: sha512-9JROoBW7pobfsx+Sq2JsASvCo6Pfo6WWoUW79HuB1BCoBXD4PLWJPqDF6fNj67pqBYTbAHkE57M1kS/+L1neOg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/lilconfig/-/lilconfig-2.0.6.tgz}
     name: lilconfig
@@ -2916,6 +2940,16 @@ packages:
     version: 2.0.1
     dev: true
 
+  registry.npmmirror.com/prompts/2.4.2:
+    resolution: {integrity: sha512-NxNv/kLguCA7p3jE8oL2aEBsrJWgAakBpgmgK6lpPWV+WuOmY6r2/zbAVnP+T8bQlA0nzHXSJSJW0Hq7ylaD2Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/prompts/-/prompts-2.4.2.tgz}
+    name: prompts
+    version: 2.4.2
+    engines: {node: '>= 6'}
+    dependencies:
+      kleur: registry.npmmirror.com/kleur/3.0.3
+      sisteransi: registry.npmmirror.com/sisteransi/1.0.5
+    dev: true
+
   registry.npmmirror.com/ps-tree/1.2.0:
     resolution: {integrity: sha512-0VnamPPYHl4uaU/nSFeZZpR21QAWRz+sRv4iW9+v/GS/J5U5iZB5BNN6J0RMoOvdx2gWM2+ZFMIm58q24e4UYA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/ps-tree/-/ps-tree-1.2.0.tgz}
     name: ps-tree
@@ -3203,6 +3237,12 @@ packages:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/signal-exit/-/signal-exit-3.0.7.tgz}
     name: signal-exit
     version: 3.0.7
+    dev: true
+
+  registry.npmmirror.com/sisteransi/1.0.5:
+    resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/sisteransi/-/sisteransi-1.0.5.tgz}
+    name: sisteransi
+    version: 1.0.5
     dev: true
 
   registry.npmmirror.com/slash/4.0.0:
