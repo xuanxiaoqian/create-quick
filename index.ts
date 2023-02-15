@@ -37,7 +37,7 @@ const argv = minimist(process.argv.slice(2), { string: ['_'] })
 let projectName = argv._[0]
 let defaultProjectName = projectName ? projectName : 'test-project'
 
-const templatesData: Object = readJsonFile('./templatesData.json')
+const templatesData: Object = readJsonFile(path.join(__dirname, './templatesData.json'))
 const promptsOptions: Array<any> = handleOptions(templatesData)
 
 const promptsArray: Array<any> = [
