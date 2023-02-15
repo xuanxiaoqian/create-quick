@@ -17,6 +17,7 @@
     "build": "zx ./scripts/build.mjs && node outfile.cjs",
     "format": "prettier --write .",
     "release": "standard-version",
+    "prepublishOnly": "zx ./scripts/prepublish.mjs",
     "prepare": "husky install"
   },
   "keywords": [
