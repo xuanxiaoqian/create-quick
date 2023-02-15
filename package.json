@@ -1,0 +1,56 @@
+{
+  "name": "create-quick",
+  "version": "1.0.0",
+  "description": "约定代替编码的脚手架搭建工具",
+  "main": "outfile.cjs",
+  "bin": {
+    "create-quick": "outfile.cjs"
+  },
+  "files": [
+    "outfile.cjs",
+    "templates"
+  ],
+  "engines": {
+    "node": "^14.18.0 || >=16.0.0"
+  },
+  "scripts": {
+    "build": "zx ./scripts/build.mjs && node outfile.cjs",
+    "format": "prettier --write .",
+    "prepare": "husky install"
+  },
+  "keywords": [
+    "create-quick",
+    "cli",
+    "xuanxiaoqian"
+  ],
+  "author": "xuanxiaoqian",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xuanxiaoqian/create-quick"
+  },
+  "bugs": {
+    "url": "https://github.com/xuanxiaoqian/create-quick/issues"
+  },
+  "homepage": "https://create-quick.xuanxiaoqian.com/",
+  "devDependencies": {
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "esbuild": "^0.17.8",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.2",
+    "prettier": "^2.8.4",
+    "typescript": "^4.9.5",
+    "zx": "^7.1.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,vue,json}": [
+      "prettier --write"
+    ]
+  }
+}

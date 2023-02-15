@@ -1,0 +1,27 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+[remote "gitee"]
+	url = https://gitee.com/xuanxiaoqian/create-quick.git
+	fetch = +refs/heads/*:refs/remotes/gitee/*
+[remote "github"]
+	url = https://gitee.com/xuanxiaoqian/create-quick.git
+	fetch = +refs/heads/*:refs/remotes/github/*
+[branch "master"]
+	remote = gitee
+	merge = refs/heads/master
+
+# 如果开启了vpn需要在git使用以下配置
+# git config --global http.proxy 127.0.0.1:7890
+# git config --global https.proxy 127.0.0.1:7890
+
+# 取消上述配置
+# git config --global --unset http.proxy
+# git config --global --unset https.proxy
+
+# 因为我们模板有时候需要修改大小写
+# git config core.ignorecase false
