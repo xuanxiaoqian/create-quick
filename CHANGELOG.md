@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.4](https://github.com/xuanxiaoqian/create-quick/compare/v1.2.2...v1.2.4) (2023-02-15)
+
+
+### Bug Fixes
+
+* 最终修复上线npm读取不到templatesData.json的问题 ([1fa940d](https://github.com/xuanxiaoqian/create-quick/commit/1fa940d98ad8bdb80f3aa98ab01306305e3fa2a5))
+
 ### [1.2.2](https://github.com/xuanxiaoqian/create-quick/compare/v1.2.1...v1.2.2) (2023-02-15)
 
 
