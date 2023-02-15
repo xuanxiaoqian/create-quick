@@ -1,0 +1,11 @@
+<%- importList -%>
+import { createApp } from 'vue'
+import App from './App.vue'
+
+import '@/style/reset.css'
+
+const app = createApp(App)
+
+<%- useList -%>
+
+app.mount('#app')

@@ -16,6 +16,7 @@
   "scripts": {
     "build": "zx ./scripts/build.mjs && node outfile.cjs",
     "format": "prettier --write .",
+    "release": "standard-version",
     "prepare": "husky install"
   },
   "keywords": [
@@ -34,12 +35,18 @@
   },
   "homepage": "https://create-quick.xuanxiaoqian.com/",
   "devDependencies": {
+    "@types/ejs": "^3.1.2",
+    "@types/fs-extra": "^11.0.1",
+    "@types/node": "^18.13.0",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
+    "ejs": "^3.1.8",
     "esbuild": "^0.17.8",
+    "fs-extra": "^11.1.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.2",
     "prettier": "^2.8.4",
+    "standard-version": "^9.5.0",
     "typescript": "^4.9.5",
     "zx": "^7.1.1"
   },
