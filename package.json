@@ -8,6 +8,7 @@
   },
   "files": [
     "outfile.cjs",
+    "templatesData.json",
     "templates"
   ],
   "engines": {

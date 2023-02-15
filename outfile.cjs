@@ -8617,13 +8617,15 @@ var projectName = argv._[0];
 var defaultProjectName = projectName ? projectName : "test-project";
 var templatesData = readJsonFile("./templatesData.json");
 var promptsOptions = handleOptions(templatesData);
-var promptsArray = [{
-  name: "projectName",
-  type: projectName ? null : "text",
-  message: "Project name:",
-  initial: defaultProjectName,
-  onState: (state) => projectName = String(state.value).trim() || defaultProjectName
-}];
+var promptsArray = [
+  {
+    name: "projectName",
+    type: projectName ? null : "text",
+    message: "Project name:",
+    initial: defaultProjectName,
+    onState: (state) => projectName = String(state.value).trim() || defaultProjectName
+  }
+];
 async function init() {
   let promptsResult = await (0, import_prompts.default)(promptsArray.concat(promptsOptions));
   const config = {
