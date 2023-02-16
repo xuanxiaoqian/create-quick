@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/xuanxiaoqian/create-quick/compare/v1.3.2...v1.4.0) (2023-02-16)
+
+
+### Features
+
+* 新增ejsData.json可以定义回调函数，会在选中选项时调用 ([3afafbd](https://github.com/xuanxiaoqian/create-quick/commit/3afafbd3713a179fcf9768da2f1d3eac2835ee8a))
+
 ### [1.3.2](https://github.com/xuanxiaoqian/create-quick/compare/v1.3.1...v1.3.2) (2023-02-16)
 
 ### [1.3.1](https://github.com/xuanxiaoqian/create-quick/compare/v1.3.0...v1.3.1) (2023-02-16)
