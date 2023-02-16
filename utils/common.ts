@@ -68,7 +68,7 @@ export function recursionDir(
   fn: (data: { path: string; isDir: boolean }) => void
 ) {
   if (!fs.existsSync(targetPath)) {
-    return
+    return false
   }
   const stats = fs.statSync(targetPath)
 

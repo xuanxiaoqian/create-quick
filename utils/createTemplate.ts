@@ -2,14 +2,15 @@ import ejs from 'ejs'
 import fs from 'fs'
 import fse from 'fs-extra'
 import path from 'path'
-import { mergePackage, recursionDir } from './common'
+import { mergePackage, readJsonFile, recursionDir } from './common'
 import { defaultConfig } from './defaultConfig'
-import { configType } from './types'
+import { configType, configTypeDeepRequired } from './types'
 
 /**
  * 用于创建渲染项目
  * @param config 配置参数
  * @param templatesRoot 模板位置
+ * @param fn 执行完成的回调函数
  */
 export const createTemplate = (
   config: configType,
@@ -18,14 +19,14 @@ export const createTemplate = (
 ) => {
   config = Object.assign(defaultConfig, config)
 
-  const { projectName, dirAlias, template, ejsVarAilas, options } = config as Required<configType>
+  const { projectName, dirAlias, template, ejsVarAilas, options } = config as configTypeDeepRequired
 
   const newProjectPath = path.join(process.cwd(), projectName)
 
   const curTemplate = path.join(templatesRoot, template)
-  const curBase = path.join(curTemplate, dirAlias.base!)
-  const curOptions = path.join(curTemplate, dirAlias.options!)
-  const curEjs = path.join(curTemplate, dirAlias.ejs!)
+  const curBase = path.join(curTemplate, dirAlias.base)
+  const curOptions = path.join(curTemplate, dirAlias.options)
+  const curEjs = path.join(curTemplate, dirAlias.ejs)
 
   const ejsData: any = {}
 
@@ -147,4 +148,14 @@ const renderEjs = (targetPath: string, newPath: string, config: { ejsData: any }
 const endFolw = (targetPath: string) => {
   // TODO:: 修改package.json信息
   const RootPackageJsonPath = path.join(targetPath, 'package.json')
+
+  if (fs.existsSync(RootPackageJsonPath)) {
+    let _data: any = readJsonFile(RootPackageJsonPath)
+    _data.name = path.basename(targetPath)
+    _data.version = '0.0.0'
+    _data.private = _data.private ? false : _data.private
+
+    let str = JSON.stringify(_data, null, 2)
+    fs.writeFileSync(RootPackageJsonPath, str)
+  }
 }

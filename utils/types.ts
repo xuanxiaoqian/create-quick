@@ -1,3 +1,9 @@
+export type DeepRequired<T> = {
+  [K in keyof T]: Required<DeepRequired<T[K]>>
+}
+
+export type configTypeDeepRequired = Required<DeepRequired<configType>>
+
 export type configType = {
   // 项目名
   projectName: string

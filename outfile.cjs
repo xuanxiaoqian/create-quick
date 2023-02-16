@@ -8448,7 +8448,7 @@ function readJsonFile(filename) {
 }
 function recursionDir(targetPath, fn) {
   if (!import_fs.default.existsSync(targetPath)) {
-    return;
+    return false;
   }
   const stats = import_fs.default.statSync(targetPath);
   fn({ path: targetPath, isDir: stats.isDirectory() });
@@ -8585,6 +8585,14 @@ var renderEjs = (targetPath, newPath, config) => {
 };
 var endFolw = (targetPath) => {
   const RootPackageJsonPath = import_path2.default.join(targetPath, "package.json");
+  if (import_fs2.default.existsSync(RootPackageJsonPath)) {
+    let _data = readJsonFile(RootPackageJsonPath);
+    _data.name = import_path2.default.basename(targetPath);
+    _data.version = "0.0.0";
+    _data.private = _data.private ? false : _data.private;
+    let str = JSON.stringify(_data, null, 2);
+    import_fs2.default.writeFileSync(RootPackageJsonPath, str);
+  }
 };
 
 // index.ts
@@ -8615,7 +8623,7 @@ var handleOptions = (data) => {
 var argv = (0, import_minimist.default)(process.argv.slice(2), { string: ["_"] });
 var projectName = argv._[0];
 var defaultProjectName = projectName ? projectName : "test-project";
-var templatesData = readJsonFile(import_path3.default.resolve(__dirname, "./templatesData.json"));
+var templatesData = readJsonFile(import_path3.default.join(__dirname, "./templatesData.json"));
 var promptsOptions = handleOptions(templatesData);
 var promptsArray = [
   {
@@ -8629,7 +8637,7 @@ var promptsArray = [
 async function init() {
   let promptsResult = await (0, import_prompts.default)(promptsArray.concat(promptsOptions));
   const config = {
-    projectName: promptsResult["projectName"],
+    projectName: promptsResult["projectName"] ?? defaultProjectName,
     template: promptsResult["templateName"],
     ejsVarAilas: "config-text.js",
     options: promptsResult["options"]

@@ -1,7 +1,7 @@
-import { configType } from './types'
+import { configTypeDeepRequired } from './types'
 
 // 可选参数默认变量
-export const defaultConfig: configType = {
+export const defaultConfig: configTypeDeepRequired = {
   projectName: 'default-project',
   template: 'default-template',
   dirAlias: {
