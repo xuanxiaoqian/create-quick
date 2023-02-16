@@ -76,7 +76,7 @@ createTemplate(config, templatesRoot, ({ newProjectPath }) => {
 
 ## 快速上手
 
-敬请期待...
+前往最小化demo仓库   <a href="https://gitee.com/lianxuan7/create-quick">create-mini-quick</a>
 
 
 
