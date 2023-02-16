@@ -2,9 +2,10 @@
 <p align="center">约定代替编码，更灵活、迅速的脚手架搭建工具</p>
 
 <p align="center">
-  <a href="">文档网站（暂无）</a>
+  <a target="_blank" href="">文档网站（暂无）</a>
   &nbsp;
 </p>
+
 
 
 ---
@@ -43,7 +44,7 @@ npx create-quick
 - 模板名里面有着三个文件夹，分别是`base`、`options`、`ejs`（可通过配置变量自定义命名）
 - options文件夹里面的各种选项里面的文件目录需要跟base目录一一对应
 - options里面的`package.json`会和base的`package.json`进行合并，其他文件全是替换
-- options里面的`ejsData.js`为参数变量，用于给ejs模板引擎渲染的，该文件也不会添加到base里（可通过配置变量自定义命名）
+- options里面的`ejsData.js`为参数变量，用于给ejs模板引擎渲染的，同时里面可以定义一个回调函数，到该options执行完成之后会调用回调函数，可以接收两个值，一个是新项目路径，一个是config参数。该文件也不会添加到base里（可通过配置变量自定义命名）
 - ejs文件夹为模板引擎，里面的文件目录也是和base目录一一对应，例如：`main.ts.ejs`文件名最终合并到base里面的名字为`main.ts`，也会覆盖base
 
 
@@ -76,7 +77,7 @@ createTemplate(config, templatesRoot, ({ newProjectPath }) => {
 
 ## 快速上手
 
-前往最小化demo仓库   <a href="https://gitee.com/lianxuan7/create-quick">create-mini-quick</a>
+前往最小化demo仓库   <a target="_blank" href="https://gitee.com/lianxuan7/create-quick">create-mini-quick</a>
 
 
 
