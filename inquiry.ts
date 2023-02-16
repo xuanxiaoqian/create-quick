@@ -1,7 +1,7 @@
 import minimist from 'minimist'
 import path from 'path'
 import prompts from 'prompts'
-import { readJsonFile } from './utils'
+import { configType, readJsonFile } from './utils'
 
 const argv = minimist(process.argv.slice(2), { string: ['_'] })
 let projectName = argv._[0]
@@ -47,7 +47,7 @@ const promptsArray: Array<any> = [
   }
 ]
 
-export const inquiry = async () => {
+export const inquiry = async (): Promise<configType> => {
   let promptsResult = (await prompts(promptsArray.concat(promptsOptions))) as {
     projectName: string
     templateName: string
@@ -58,5 +58,12 @@ export const inquiry = async () => {
     ? promptsResult.projectName
     : defaultProjectName
 
-  return promptsResult
+  const config: configType = {
+    projectName: promptsResult['projectName'],
+    template: promptsResult['templateName'],
+    ejsVarAilas: 'config-text.js',
+    options: promptsResult['options']
+  }
+
+  return config
 }

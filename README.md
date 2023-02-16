@@ -72,6 +72,8 @@ createTemplate(config, templatesRoot, ({ newProjectPath }) => {
 
 
 
+<br />
+
 ## 快速上手
 
 敬请期待...
@@ -81,6 +83,8 @@ createTemplate(config, templatesRoot, ({ newProjectPath }) => {
 
 
 
+
+<br />
 
 ## 疑问交流
 

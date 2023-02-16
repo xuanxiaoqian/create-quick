@@ -1,17 +1,10 @@
 #!/usr/bin/env node
 import path from 'path'
 import { inquiry } from './inquiry'
-import { configType, createTemplate } from './utils'
+import { createTemplate } from './utils'
 
 async function init() {
-  let promptsResult = await inquiry()
-
-  const config: configType = {
-    projectName: promptsResult['projectName'],
-    template: promptsResult['templateName'],
-    ejsVarAilas: 'config-text.js',
-    options: promptsResult['options']
-  }
+  let config = await inquiry()
 
   const templatesRoot = path.resolve(__dirname, './templates')
 
