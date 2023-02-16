@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/xuanxiaoqian/create-quick/compare/v1.2.4...v1.3.0) (2023-02-16)
+
+
+### Features
+
+* 新增了endFolw函数初始化package.json，修复了ts的type为必选 ([23c55ed](https://github.com/xuanxiaoqian/create-quick/commit/23c55eddc617d3e7df121defb22fe29496b444ba))
+
 ### [1.2.4](https://github.com/xuanxiaoqian/create-quick/compare/v1.2.2...v1.2.4) (2023-02-15)
 
 
