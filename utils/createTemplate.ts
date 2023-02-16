@@ -15,7 +15,7 @@ import { configType, configTypeDeepRequired } from './types'
 export const createTemplate = (
   config: configType,
   templatesRoot: string,
-  fn?: (data: { newProjectPath: string }) => void
+  fn?: (data: { newProjectPath: string; config: configType }) => void
 ) => {
   config = Object.assign(defaultConfig, config)
 
@@ -36,6 +36,8 @@ export const createTemplate = (
 
   //copy optionsDir and ejsData
   options?.map((item) => {
+    let fn: any
+
     if (!fs.existsSync(path.join(curOptions, item))) {
       return false
     }
@@ -56,6 +58,10 @@ export const createTemplate = (
           const jsonData = require(src)
 
           for (const key in jsonData) {
+            if (typeof jsonData[key] === 'function') {
+              fn = jsonData[key]
+            }
+
             const curData = jsonData[key]
 
             ejsData[key] ? (ejsData[key] += curData) : (ejsData[key] = curData)
@@ -67,6 +73,10 @@ export const createTemplate = (
         return true
       }
     })
+
+    if (typeof fn === 'function') {
+      fn(newProjectPath, config)
+    }
   })
 
   renderEjs(curEjs, newProjectPath, { ejsData })
@@ -74,7 +84,7 @@ export const createTemplate = (
   endFolw(newProjectPath)
 
   if (typeof fn === 'function') {
-    fn({ newProjectPath })
+    fn({ newProjectPath, config })
   }
 }
 

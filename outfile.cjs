@@ -8503,6 +8503,7 @@ var createTemplate = (config, templatesRoot, fn) => {
   renderBase(curBase, newProjectPath);
   initOptionsEjsData(curOptions, { ejsVarAilas, ejsData });
   options == null ? void 0 : options.map((item) => {
+    let fn2;
     if (!import_fs2.default.existsSync(import_path2.default.join(curOptions, item))) {
       return false;
     }
@@ -8519,6 +8520,9 @@ var createTemplate = (config, templatesRoot, fn) => {
         if (basename === ejsVarAilas) {
           const jsonData = require(src);
           for (const key in jsonData) {
+            if (typeof jsonData[key] === "function") {
+              fn2 = jsonData[key];
+            }
             const curData = jsonData[key];
             ejsData[key] ? ejsData[key] += curData : ejsData[key] = curData;
           }
@@ -8527,11 +8531,14 @@ var createTemplate = (config, templatesRoot, fn) => {
         return true;
       }
     });
+    if (typeof fn2 === "function") {
+      fn2(newProjectPath, config);
+    }
   });
   renderEjs(curEjs, newProjectPath, { ejsData });
   endFolw(newProjectPath);
   if (typeof fn === "function") {
-    fn({ newProjectPath });
+    fn({ newProjectPath, config });
   }
 };
 var renderBase = (curBase, newProjectPath) => {
@@ -8638,18 +8645,18 @@ var promptsArray = [
 var inquiry = async () => {
   let promptsResult = await (0, import_prompts.default)(promptsArray.concat(promptsOptions));
   promptsResult.projectName = promptsResult.projectName ? promptsResult.projectName : defaultProjectName;
-  return promptsResult;
-};
-
-// index.ts
-async function init() {
-  let promptsResult = await inquiry();
   const config = {
     projectName: promptsResult["projectName"],
     template: promptsResult["templateName"],
     ejsVarAilas: "config-text.js",
     options: promptsResult["options"]
   };
+  return config;
+};
+
+// index.ts
+async function init() {
+  let config = await inquiry();
   const templatesRoot = import_path4.default.resolve(__dirname, "./templates");
   createTemplate(config, templatesRoot, ({ newProjectPath }) => {
     console.log(`\u521B\u5EFA\u5B8C\u6210,\u65B0\u9879\u76EE\u8DEF\u5F84\u4E3A${newProjectPath}`);
