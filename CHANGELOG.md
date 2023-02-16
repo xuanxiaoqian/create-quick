@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/xuanxiaoqian/create-quick/compare/v1.3.0...v1.3.1) (2023-02-16)
+
+
+### Bug Fixes
+
+* 抽离入口文件的询问代码至inquiry.ts ([e6ae0b9](https://github.com/xuanxiaoqian/create-quick/commit/e6ae0b90558def37b12084edc72d8a2034ff5d48))
+
 ## [1.3.0](https://github.com/xuanxiaoqian/create-quick/compare/v1.2.4...v1.3.0) (2023-02-16)
 
 
