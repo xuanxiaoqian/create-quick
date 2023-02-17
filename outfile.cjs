@@ -8503,32 +8503,33 @@ var createTemplate = (config, templatesRoot, fn) => {
   renderBase(curBase, newProjectPath);
   initOptionsEjsData(curOptions, { ejsVarAilas, ejsData });
   options == null ? void 0 : options.map((item) => {
+    const curItemPath = import_path2.default.join(curOptions, item);
     let fn2;
-    if (!import_fs2.default.existsSync(import_path2.default.join(curOptions, item))) {
+    if (!import_fs2.default.existsSync(curItemPath)) {
       return false;
     }
-    import_fs_extra.default.copySync(import_path2.default.join(curOptions, item), newProjectPath, {
+    import_fs_extra.default.copySync(curItemPath, newProjectPath, {
       filter(src, dest) {
         const basename = import_path2.default.basename(src);
-        if (basename === "node_modules") {
-          return false;
-        }
-        if (basename === "package.json") {
-          mergePackage(src, dest);
-          return false;
-        }
-        if (basename === ejsVarAilas) {
-          const jsonData = require(src);
-          for (const key in jsonData) {
-            if (typeof jsonData[key] === "function") {
-              fn2 = jsonData[key];
+        switch (basename) {
+          case "node_modules":
+            return false;
+          case "package.json":
+            mergePackage(src, dest);
+            return false;
+          case ejsVarAilas:
+            const jsonData = require(src);
+            for (const key in jsonData) {
+              if (typeof jsonData[key] === "function") {
+                fn2 = jsonData[key];
+              }
+              const curData = jsonData[key];
+              ejsData[key] ? ejsData[key] += curData : ejsData[key] = curData;
             }
-            const curData = jsonData[key];
-            ejsData[key] ? ejsData[key] += curData : ejsData[key] = curData;
-          }
-          return false;
+            return false;
+          default:
+            return true;
         }
-        return true;
       }
     });
     if (typeof fn2 === "function") {
@@ -8545,10 +8546,7 @@ var renderBase = (curBase, newProjectPath) => {
   import_fs_extra.default.copySync(curBase, newProjectPath, {
     filter(src) {
       const basename = import_path2.default.basename(src);
-      if (basename === "node_modules") {
-        return false;
-      }
-      return true;
+      return basename !== "node_modules";
     }
   });
 };
@@ -8559,7 +8557,7 @@ var initOptionsEjsData = (targetPath, config) => {
   const { ejsVarAilas, ejsData } = config;
   recursionDir(targetPath, (data) => {
     const filename = import_path2.default.basename(data.path);
-    if (data.isDir && filename === ejsVarAilas) {
+    if (filename === ejsVarAilas) {
       const jsonData = require(data.path);
       for (const key in jsonData) {
         ejsData[key] = "";

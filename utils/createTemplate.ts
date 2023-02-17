@@ -36,41 +36,43 @@ export const createTemplate = (
 
   //copy optionsDir and ejsData
   options?.map((item) => {
-    let fn: any
+    const curItemPath = path.join(curOptions, item)
+    let fn: Function | any
 
-    if (!fs.existsSync(path.join(curOptions, item))) {
+    if (!fs.existsSync(curItemPath)) {
       return false
     }
 
-    fse.copySync(path.join(curOptions, item), newProjectPath, {
+    fse.copySync(curItemPath, newProjectPath, {
       filter(src, dest) {
         const basename = path.basename(src)
-        if (basename === 'node_modules') {
-          return false
-        }
 
-        if (basename === 'package.json') {
-          mergePackage(src, dest)
-          return false
-        }
+        switch (basename) {
+          case 'node_modules':
+            return false
 
-        if (basename === ejsVarAilas) {
-          const jsonData = require(src)
+          case 'package.json':
+            mergePackage(src, dest)
+            return false
 
-          for (const key in jsonData) {
-            if (typeof jsonData[key] === 'function') {
-              fn = jsonData[key]
+          case ejsVarAilas:
+            const jsonData = require(src)
+
+            for (const key in jsonData) {
+              if (typeof jsonData[key] === 'function') {
+                fn = jsonData[key]
+              }
+
+              const curData = jsonData[key]
+
+              ejsData[key] ? (ejsData[key] += curData) : (ejsData[key] = curData)
             }
 
-            const curData = jsonData[key]
+            return false
 
-            ejsData[key] ? (ejsData[key] += curData) : (ejsData[key] = curData)
-          }
-
-          return false
+          default:
+            return true
         }
-
-        return true
       }
     })
 
@@ -93,10 +95,8 @@ const renderBase = (curBase: string, newProjectPath: string) => {
   fse.copySync(curBase, newProjectPath, {
     filter(src) {
       const basename = path.basename(src)
-      if (basename === 'node_modules') {
-        return false
-      }
-      return true
+
+      return basename !== 'node_modules'
     }
   })
 }
@@ -112,7 +112,7 @@ const initOptionsEjsData = (targetPath: string, config: { ejsVarAilas: string; e
   recursionDir(targetPath, (data) => {
     const filename = path.basename(data.path)
 
-    if (data.isDir && filename === ejsVarAilas) {
+    if (filename === ejsVarAilas) {
       const jsonData = require(data.path)
 
       for (const key in jsonData) {
