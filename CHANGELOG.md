@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.1](https://github.com/xuanxiaoqian/create-quick/compare/v1.4.0...v1.4.1) (2023-02-17)
+
+
+### Bug Fixes
+
+* 修复初始化ejs数据的时候并没有初始化上 ([998e019](https://github.com/xuanxiaoqian/create-quick/commit/998e019fedc297dec04e6d7b0896d86b9b0a470a))
+
 ## [1.4.0](https://github.com/xuanxiaoqian/create-quick/compare/v1.3.2...v1.4.0) (2023-02-16)
 
 
