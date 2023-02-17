@@ -50,24 +50,21 @@ export const createTemplate = (
         switch (basename) {
           case 'node_modules':
             return false
-
           case 'package.json':
             mergePackage(src, dest)
             return false
-
           case ejsVarAilas:
-            const jsonData = require(src)
+            const optionEjsData = require(src)
 
-            for (const key in jsonData) {
-              if (typeof jsonData[key] === 'function') {
-                fn = jsonData[key]
+            Object.keys(optionEjsData).map((key) => {
+              if (typeof optionEjsData[key] === 'function') {
+                fn = optionEjsData[key]
+                return
               }
 
-              const curData = jsonData[key]
-
-              ejsData[key] ? (ejsData[key] += curData) : (ejsData[key] = curData)
-            }
-
+              const curData = optionEjsData[key]
+              ejsData[key] += curData
+            })
             return false
 
           default:
@@ -113,11 +110,11 @@ const initOptionsEjsData = (targetPath: string, config: { ejsVarAilas: string; e
     const filename = path.basename(data.path)
 
     if (filename === ejsVarAilas) {
-      const jsonData = require(data.path)
+      const optionEjsData = require(data.path)
 
-      for (const key in jsonData) {
-        ejsData[key] = ''
-      }
+      Object.keys(optionEjsData).map((k) => {
+        ejsData[k] = ''
+      })
     }
   })
 }
@@ -131,10 +128,9 @@ const renderEjs = (targetPath: string, newPath: string, config: { ejsData: any }
   const { ejsData } = config
   recursionDir(targetPath, (data) => {
     const basename = path.basename(data.path)
-    if (data.isDir) {
-      if (basename === 'node_modules') {
-        return
-      }
+
+    if (basename === 'node_modules') {
+      return false
     }
 
     try {
@@ -143,10 +139,12 @@ const renderEjs = (targetPath: string, newPath: string, config: { ejsData: any }
           return
         }
 
-        let path2 = path.join(newPath, path.relative(targetPath, data.path)).split('.')
-        path2.pop()
+        const renderEjsPath = path.join(newPath, path.relative(targetPath, data.path))
 
-        fs.writeFileSync(path2.join('.'), str)
+        let deleteEjsSuffix = renderEjsPath.split('.')
+        deleteEjsSuffix.pop()
+
+        fs.writeFileSync(deleteEjsSuffix.join('.'), str)
       })
     } catch (error) {
       console.log(error)

@@ -8519,13 +8519,14 @@ var createTemplate = (config, templatesRoot, fn) => {
             return false;
           case ejsVarAilas:
             const jsonData = require(src);
-            for (const key in jsonData) {
+            Object.keys(jsonData).map((key) => {
               if (typeof jsonData[key] === "function") {
                 fn2 = jsonData[key];
+                return;
               }
               const curData = jsonData[key];
-              ejsData[key] ? ejsData[key] += curData : ejsData[key] = curData;
-            }
+              ejsData[key] += curData;
+            });
             return false;
           default:
             return true;
@@ -8536,6 +8537,7 @@ var createTemplate = (config, templatesRoot, fn) => {
       fn2(newProjectPath, config);
     }
   });
+  console.log(ejsData);
   renderEjs(curEjs, newProjectPath, { ejsData });
   endFolw(newProjectPath);
   if (typeof fn === "function") {
@@ -8558,10 +8560,10 @@ var initOptionsEjsData = (targetPath, config) => {
   recursionDir(targetPath, (data) => {
     const filename = import_path2.default.basename(data.path);
     if (filename === ejsVarAilas) {
-      const jsonData = require(data.path);
-      for (const key in jsonData) {
-        ejsData[key] = "";
-      }
+      const optionEjsData = require(data.path);
+      Object.keys(optionEjsData).map((k) => {
+        ejsData[k] = "";
+      });
     }
   });
 };
@@ -8572,19 +8574,18 @@ var renderEjs = (targetPath, newPath, config) => {
   const { ejsData } = config;
   recursionDir(targetPath, (data) => {
     const basename = import_path2.default.basename(data.path);
-    if (data.isDir) {
-      if (basename === "node_modules") {
-        return;
-      }
+    if (basename === "node_modules") {
+      return false;
     }
     try {
       import_ejs.default.renderFile(data.path, ejsData, (err, str) => {
         if (err) {
           return;
         }
-        let path22 = import_path2.default.join(newPath, import_path2.default.relative(targetPath, data.path)).split(".");
-        path22.pop();
-        import_fs2.default.writeFileSync(path22.join("."), str);
+        const renderEjsPath = import_path2.default.join(newPath, import_path2.default.relative(targetPath, data.path));
+        let deleteEjsSuffix = renderEjsPath.split(".");
+        deleteEjsSuffix.pop();
+        import_fs2.default.writeFileSync(deleteEjsSuffix.join("."), str);
       });
     } catch (error) {
       console.log(error);
