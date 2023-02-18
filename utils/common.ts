@@ -96,3 +96,17 @@ export const mergePackage = (targetPath: string, newTargetPath: string) => {
     fs.writeFileSync(newTargetPath, JSON.stringify(pkg, null, 2) + '\n')
   }
 }
+
+/**
+ * 判断一个值的类型
+ * @param data 需要判断的类型
+ * @returns 属性的类型
+ */
+export const myTypeof = (data: any) => {
+  var toString = Object.prototype.toString
+  var dataType = toString
+    .call(data)
+    .replace(/\[object\s(.+)\]/, '$1')
+    .toLowerCase()
+  return dataType
+}

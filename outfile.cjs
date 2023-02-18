@@ -8470,6 +8470,11 @@ var mergePackage = (targetPath, newTargetPath) => {
     import_fs.default.writeFileSync(newTargetPath, JSON.stringify(pkg, null, 2) + "\n");
   }
 };
+var myTypeof = (data) => {
+  var toString = Object.prototype.toString;
+  var dataType = toString.call(data).replace(/\[object\s(.+)\]/, "$1").toLowerCase();
+  return dataType;
+};
 
 // utils/createTemplate.ts
 var import_ejs = __toESM(require_ejs());
@@ -8518,14 +8523,20 @@ var createTemplate = (config, templatesRoot, fn) => {
             mergePackage(src, dest);
             return false;
           case ejsVarAilas:
-            const jsonData = require(src);
-            Object.keys(jsonData).map((key) => {
-              if (typeof jsonData[key] === "function") {
-                fn2 = jsonData[key];
-                return;
+            const optionEjsData = require(src);
+            Object.keys(optionEjsData).map((key) => {
+              let curData = optionEjsData[key];
+              switch (myTypeof(curData)) {
+                case "function":
+                  fn2 = curData;
+                  break;
+                case "array":
+                  ejsData[key] = [...ejsData[key], ...curData];
+                  break;
+                default:
+                  ejsData[key] += curData;
+                  break;
               }
-              const curData = jsonData[key];
-              ejsData[key] += curData;
             });
             return false;
           default:
@@ -8562,7 +8573,18 @@ var initOptionsEjsData = (targetPath, config) => {
     if (filename === ejsVarAilas) {
       const optionEjsData = require(data.path);
       Object.keys(optionEjsData).map((k) => {
-        ejsData[k] = "";
+        const curData = optionEjsData[k];
+        switch (myTypeof(curData)) {
+          case "function":
+            ejsData[k] = new Function();
+            break;
+          case "array":
+            ejsData[k] = [];
+            break;
+          default:
+            ejsData[k] = "";
+            break;
+        }
       });
     }
   });

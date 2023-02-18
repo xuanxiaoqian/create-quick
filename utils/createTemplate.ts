@@ -2,7 +2,7 @@ import ejs from 'ejs'
 import fs from 'fs'
 import fse from 'fs-extra'
 import path from 'path'
-import { mergePackage, readJsonFile, recursionDir } from './common'
+import { mergePackage, myTypeof, readJsonFile, recursionDir } from './common'
 import { defaultConfig } from './defaultConfig'
 import { configType, configTypeDeepRequired } from './types'
 
@@ -57,13 +57,19 @@ export const createTemplate = (
             const optionEjsData = require(src)
 
             Object.keys(optionEjsData).map((key) => {
-              if (typeof optionEjsData[key] === 'function') {
-                fn = optionEjsData[key]
-                return
-              }
+              let curData = optionEjsData[key]
 
-              const curData = optionEjsData[key]
-              ejsData[key] += curData
+              switch (myTypeof(curData)) {
+                case 'function':
+                  fn = curData
+                  break
+                case 'array':
+                  ejsData[key] = [...ejsData[key], ...curData]
+                  break
+                default:
+                  ejsData[key] += curData
+                  break
+              }
             })
             return false
 
@@ -77,6 +83,8 @@ export const createTemplate = (
       fn(newProjectPath, config)
     }
   })
+
+  console.log(ejsData)
 
   renderEjs(curEjs, newProjectPath, { ejsData })
 
@@ -113,7 +121,19 @@ const initOptionsEjsData = (targetPath: string, config: { ejsVarAilas: string; e
       const optionEjsData = require(data.path)
 
       Object.keys(optionEjsData).map((k) => {
-        ejsData[k] = ''
+        const curData = optionEjsData[k]
+
+        switch (myTypeof(curData)) {
+          case 'function':
+            ejsData[k] = new Function()
+            break
+          case 'array':
+            ejsData[k] = []
+            break
+          default:
+            ejsData[k] = ''
+            break
+        }
       })
     }
   })
