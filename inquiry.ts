@@ -14,7 +14,7 @@ const handleOptions = (data: any) => {
     type: 'select',
     name: 'templateName',
     message: 'Pick template',
-    choices: [] as any
+    choices: [] as Array<any>
   }
 
   Object.keys(data).map((k) => {
