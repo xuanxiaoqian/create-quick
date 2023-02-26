@@ -84,8 +84,6 @@ export const createTemplate = (
     }
   })
 
-  console.log(ejsData)
-
   renderEjs(curEjs, newProjectPath, { ejsData })
 
   endFolw(newProjectPath)
@@ -174,7 +172,6 @@ const renderEjs = (targetPath: string, newPath: string, config: { ejsData: any }
 
 // 最后结束要做的事
 const endFolw = (targetPath: string) => {
-  // TODO:: 修改package.json信息
   const RootPackageJsonPath = path.join(targetPath, 'package.json')
 
   if (fs.existsSync(RootPackageJsonPath)) {

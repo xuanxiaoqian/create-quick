@@ -7,7 +7,6 @@
 </p>
 
 
-
 ---
 
 
@@ -74,6 +73,42 @@ createTemplate(config, templatesRoot, ({ newProjectPath }) => {
 
 
 <br />
+
+
+
+## 渲染流程
+
+renderTemplate下面有三个文件夹 `base`、`ejs`、`options`
+
+
+
+第一步：直接递归复制`base`
+
+
+
+第二步：递归options里面所有的`ejsData.js`数据，但是并不赋值，将Key记录，因为ejs不能渲染不存在的Key
+
+
+
+第三步：传递过来的options数据选择需要的进行`options`文件夹进行复制，并且读取里面的`ejsData.js`数据
+
+
+
+第四步：根据`ejsData.js`数据进行渲染ejs文件夹所有文件
+
+
+
+第五步：调用内部收尾函数
+
+
+
+第六步：调用渲染函数的回调函数
+
+
+
+TODO：修改渲染代码，`ejsData.js`里的回调函数数据不全、文档未完善
+
+
 
 ## 快速上手
 
