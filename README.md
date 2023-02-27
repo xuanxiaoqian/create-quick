@@ -78,6 +78,28 @@ createTemplate(config, templatesRoot, ({ newProjectPath }) => {
 
 ## 渲染流程
 
+~~~text
+1. 数据传递createTemplate函数
+
+2. createTemplate函数内部设置参数默认值
+
+3. 复制Base文件夹进入目标路径
+
+4. 递归Options文件夹下面的所有ejsData.js文件并获得它们的Key，因为ejs模板存在不存在的Key会报错（考虑换一个）
+
+5. 根据数据里的options渲染指定的插件，并且加载插件目录下的ejsData.js数据
+
+6. 渲染Ejs文件夹
+
+7. 调用收尾函数 （重置package.json文件）
+
+8. 调用用户的回调函数
+~~~
+
+
+
+
+
 renderTemplate下面有三个文件夹 `base`、`ejs`、`options`
 
 
