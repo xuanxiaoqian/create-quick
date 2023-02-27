@@ -15,35 +15,105 @@ import { configType, configTypeDeepRequired } from './types'
 export const createTemplate = (
   config: configType,
   templatesRoot: string,
-  fn?: (data: { newProjectPath: string; config: configType }) => void
+  fn?: (data: { targetPath: string; config: configType }) => void
 ) => {
   config = Object.assign(defaultConfig, config)
 
-  const { projectName, dirAlias, template, ejsVarAilas, options } = config as configTypeDeepRequired
+  const { projectName, dirAlias, templateName, ejsDataJsAlias, options } =
+    config as configTypeDeepRequired
 
-  const newProjectPath = path.join(process.cwd(), projectName)
+  const targetPath = path.join(process.cwd(), projectName)
 
-  const curTemplate = path.join(templatesRoot, template)
-  const curBase = path.join(curTemplate, dirAlias.base)
-  const curOptions = path.join(curTemplate, dirAlias.options)
-  const curEjs = path.join(curTemplate, dirAlias.ejs)
+  const templatePath = path.join(templatesRoot, templateName)
+  const basePath = path.join(templatePath, dirAlias.base)
+  const optionsPath = path.join(templatePath, dirAlias.options)
+  const ejsPath = path.join(templatePath, dirAlias.ejs)
 
   const ejsData: any = {}
 
-  renderBase(curBase, newProjectPath)
+  const allConfig = {
+    targetPath,
+    basePath,
+    optionsPath,
+    ejsPath,
+    ejsData,
+    ejsDataJsAlias,
+    options,
+    config
+  }
 
-  initOptionsEjsData(curOptions, { ejsVarAilas: ejsVarAilas, ejsData })
+  renderBase(allConfig)
 
-  //copy optionsDir and ejsData
-  options?.map((item) => {
-    const curItemPath = path.join(curOptions, item)
+  initOptionsEjsData(allConfig)
+
+  renderOptions(allConfig)
+
+  renderEjs(allConfig)
+
+  endFolw(targetPath)
+
+  if (typeof fn === 'function') {
+    fn({ targetPath, config })
+  }
+}
+
+const renderBase = (allConfig: any) => {
+  const { basePath, targetPath } = allConfig
+
+  fse.copySync(basePath, targetPath, {
+    filter(src) {
+      const basename = path.basename(src)
+
+      return basename !== 'node_modules'
+    }
+  })
+}
+
+// 递归初始化ejs的值,防止ejs模板undefind报错
+const initOptionsEjsData = (allConfig: any) => {
+  const { optionsPath, ejsDataJsAlias, ejsData } = allConfig
+
+  if (!fs.existsSync(optionsPath)) {
+    return false
+  }
+
+  recursionDir(optionsPath, (data) => {
+    const filename = path.basename(data.path)
+
+    if (filename === ejsDataJsAlias) {
+      const optionEjsData = require(data.path)
+
+      Object.keys(optionEjsData).map((k) => {
+        const curData = optionEjsData[k]
+
+        switch (myTypeof(curData)) {
+          case 'function':
+            ejsData[k] = new Function()
+            break
+          case 'array':
+            ejsData[k] = []
+            break
+          default:
+            ejsData[k] = ''
+            break
+        }
+      })
+    }
+  })
+}
+
+const renderOptions = (allConfig: any) => {
+  const { options, optionsPath, targetPath, ejsDataJsAlias, ejsData, config } = allConfig
+
+  options?.map((item: any) => {
+    const curItemPath = path.join(optionsPath, item)
     let fn: Function | any
 
     if (!fs.existsSync(curItemPath)) {
       return false
     }
 
-    fse.copySync(curItemPath, newProjectPath, {
+    fse.copySync(curItemPath, targetPath, {
       filter(src, dest) {
         const basename = path.basename(src)
 
@@ -53,7 +123,7 @@ export const createTemplate = (
           case 'package.json':
             mergePackage(src, dest)
             return false
-          case ejsVarAilas:
+          case ejsDataJsAlias:
             const optionEjsData = require(src)
 
             Object.keys(optionEjsData).map((key) => {
@@ -80,71 +150,20 @@ export const createTemplate = (
     })
 
     if (typeof fn === 'function') {
-      fn(newProjectPath, config)
-    }
-  })
-
-  renderEjs(curEjs, newProjectPath, { ejsData })
-
-  endFolw(newProjectPath)
-
-  if (typeof fn === 'function') {
-    fn({ newProjectPath, config })
-  }
-}
-
-//copy baseDir
-const renderBase = (curBase: string, newProjectPath: string) => {
-  fse.copySync(curBase, newProjectPath, {
-    filter(src) {
-      const basename = path.basename(src)
-
-      return basename !== 'node_modules'
-    }
-  })
-}
-
-// 递归初始化ejs的值,防止ejs模板undefind报错
-const initOptionsEjsData = (targetPath: string, config: { ejsVarAilas: string; ejsData: any }) => {
-  if (!fs.existsSync(targetPath)) {
-    return false
-  }
-
-  const { ejsVarAilas, ejsData } = config
-
-  recursionDir(targetPath, (data) => {
-    const filename = path.basename(data.path)
-
-    if (filename === ejsVarAilas) {
-      const optionEjsData = require(data.path)
-
-      Object.keys(optionEjsData).map((k) => {
-        const curData = optionEjsData[k]
-
-        switch (myTypeof(curData)) {
-          case 'function':
-            ejsData[k] = new Function()
-            break
-          case 'array':
-            ejsData[k] = []
-            break
-          default:
-            ejsData[k] = ''
-            break
-        }
-      })
+      fn(targetPath, config)
     }
   })
 }
 
 // 递归渲染ejs
-const renderEjs = (targetPath: string, newPath: string, config: { ejsData: any }) => {
-  if (!fs.existsSync(targetPath)) {
+const renderEjs = (allConfig: any) => {
+  const { targetPath, ejsPath, ejsData } = allConfig
+
+  if (!fs.existsSync(ejsPath)) {
     return false
   }
 
-  const { ejsData } = config
-  recursionDir(targetPath, (data) => {
+  recursionDir(ejsPath, (data) => {
     const basename = path.basename(data.path)
 
     if (basename === 'node_modules') {
@@ -157,7 +176,7 @@ const renderEjs = (targetPath: string, newPath: string, config: { ejsData: any }
           return
         }
 
-        const renderEjsPath = path.join(newPath, path.relative(targetPath, data.path))
+        const renderEjsPath = path.join(targetPath, path.relative(ejsPath, data.path))
 
         let deleteEjsSuffix = renderEjsPath.split('.')
         deleteEjsSuffix.pop()

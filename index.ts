@@ -8,8 +8,8 @@ async function init() {
 
   const templatesRoot = path.resolve(__dirname, './templates')
 
-  createTemplate(config, templatesRoot, ({ newProjectPath }) => {
-    console.log(`创建完成,新项目路径为${newProjectPath}`)
+  createTemplate(config, templatesRoot, ({ targetPath }) => {
+    console.log(`创建完成,新项目路径为${targetPath}`)
   })
 }
 

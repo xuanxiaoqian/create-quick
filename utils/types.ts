@@ -9,7 +9,7 @@ export type configType = {
   projectName: string
 
   // 模板名
-  template: string
+  templateName: string
 
   // 模板详细文件夹别名
   dirAlias?: {
@@ -21,8 +21,8 @@ export type configType = {
     ejs?: string
   }
 
-  // ejs值的别名
-  ejsVarAilas?: string
+  // ejs数据的js文件别名
+  ejsDataJsAlias?: string
 
   // 选项文件夹名列表
   options?: Array<string>

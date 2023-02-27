@@ -3,12 +3,12 @@ import { configTypeDeepRequired } from './types'
 // 可选参数默认变量
 export const defaultConfig: configTypeDeepRequired = {
   projectName: 'default-project',
-  template: 'default-template',
+  templateName: 'default-template',
   dirAlias: {
     base: 'base',
     options: 'options',
     ejs: 'ejs'
   },
-  ejsVarAilas: 'ejsData.js',
+  ejsDataJsAlias: 'ejsData.js',
   options: []
 }

@@ -8485,92 +8485,62 @@ var import_path2 = __toESM(require("path"));
 // utils/defaultConfig.ts
 var defaultConfig = {
   projectName: "default-project",
-  template: "default-template",
+  templateName: "default-template",
   dirAlias: {
     base: "base",
     options: "options",
     ejs: "ejs"
   },
-  ejsVarAilas: "ejsData.js",
+  ejsDataJsAlias: "ejsData.js",
   options: []
 };
 
 // utils/createTemplate.ts
 var createTemplate = (config, templatesRoot, fn) => {
   config = Object.assign(defaultConfig, config);
-  const { projectName: projectName2, dirAlias, template, ejsVarAilas, options } = config;
-  const newProjectPath = import_path2.default.join(process.cwd(), projectName2);
-  const curTemplate = import_path2.default.join(templatesRoot, template);
-  const curBase = import_path2.default.join(curTemplate, dirAlias.base);
-  const curOptions = import_path2.default.join(curTemplate, dirAlias.options);
-  const curEjs = import_path2.default.join(curTemplate, dirAlias.ejs);
+  const { projectName: projectName2, dirAlias, templateName, ejsDataJsAlias, options } = config;
+  const targetPath = import_path2.default.join(process.cwd(), projectName2);
+  const templatePath = import_path2.default.join(templatesRoot, templateName);
+  const basePath = import_path2.default.join(templatePath, dirAlias.base);
+  const optionsPath = import_path2.default.join(templatePath, dirAlias.options);
+  const ejsPath = import_path2.default.join(templatePath, dirAlias.ejs);
   const ejsData = {};
-  renderBase(curBase, newProjectPath);
-  initOptionsEjsData(curOptions, { ejsVarAilas, ejsData });
-  options == null ? void 0 : options.map((item) => {
-    const curItemPath = import_path2.default.join(curOptions, item);
-    let fn2;
-    if (!import_fs2.default.existsSync(curItemPath)) {
-      return false;
-    }
-    import_fs_extra.default.copySync(curItemPath, newProjectPath, {
-      filter(src, dest) {
-        const basename = import_path2.default.basename(src);
-        switch (basename) {
-          case "node_modules":
-            return false;
-          case "package.json":
-            mergePackage(src, dest);
-            return false;
-          case ejsVarAilas:
-            const optionEjsData = require(src);
-            Object.keys(optionEjsData).map((key) => {
-              let curData = optionEjsData[key];
-              switch (myTypeof(curData)) {
-                case "function":
-                  fn2 = curData;
-                  break;
-                case "array":
-                  ejsData[key] = [...ejsData[key], ...curData];
-                  break;
-                default:
-                  ejsData[key] += curData;
-                  break;
-              }
-            });
-            return false;
-          default:
-            return true;
-        }
-      }
-    });
-    if (typeof fn2 === "function") {
-      fn2(newProjectPath, config);
-    }
-  });
-  console.log(ejsData);
-  renderEjs(curEjs, newProjectPath, { ejsData });
-  endFolw(newProjectPath);
+  const allConfig = {
+    targetPath,
+    basePath,
+    optionsPath,
+    ejsPath,
+    ejsData,
+    ejsDataJsAlias,
+    options,
+    config
+  };
+  renderBase(allConfig);
+  initOptionsEjsData(allConfig);
+  renderOptions(allConfig);
+  renderEjs(allConfig);
+  endFolw(targetPath);
   if (typeof fn === "function") {
-    fn({ newProjectPath, config });
+    fn({ targetPath, config });
   }
 };
-var renderBase = (curBase, newProjectPath) => {
-  import_fs_extra.default.copySync(curBase, newProjectPath, {
+var renderBase = (allConfig) => {
+  const { basePath, targetPath } = allConfig;
+  import_fs_extra.default.copySync(basePath, targetPath, {
     filter(src) {
       const basename = import_path2.default.basename(src);
       return basename !== "node_modules";
     }
   });
 };
-var initOptionsEjsData = (targetPath, config) => {
-  if (!import_fs2.default.existsSync(targetPath)) {
+var initOptionsEjsData = (allConfig) => {
+  const { optionsPath, ejsDataJsAlias, ejsData } = allConfig;
+  if (!import_fs2.default.existsSync(optionsPath)) {
     return false;
   }
-  const { ejsVarAilas, ejsData } = config;
-  recursionDir(targetPath, (data) => {
+  recursionDir(optionsPath, (data) => {
     const filename = import_path2.default.basename(data.path);
-    if (filename === ejsVarAilas) {
+    if (filename === ejsDataJsAlias) {
       const optionEjsData = require(data.path);
       Object.keys(optionEjsData).map((k) => {
         const curData = optionEjsData[k];
@@ -8589,12 +8559,56 @@ var initOptionsEjsData = (targetPath, config) => {
     }
   });
 };
-var renderEjs = (targetPath, newPath, config) => {
-  if (!import_fs2.default.existsSync(targetPath)) {
+var renderOptions = (allConfig) => {
+  const { options, optionsPath, targetPath, ejsDataJsAlias, ejsData, config } = allConfig;
+  options == null ? void 0 : options.map((item) => {
+    const curItemPath = import_path2.default.join(optionsPath, item);
+    let fn;
+    if (!import_fs2.default.existsSync(curItemPath)) {
+      return false;
+    }
+    import_fs_extra.default.copySync(curItemPath, targetPath, {
+      filter(src, dest) {
+        const basename = import_path2.default.basename(src);
+        switch (basename) {
+          case "node_modules":
+            return false;
+          case "package.json":
+            mergePackage(src, dest);
+            return false;
+          case ejsDataJsAlias:
+            const optionEjsData = require(src);
+            Object.keys(optionEjsData).map((key) => {
+              let curData = optionEjsData[key];
+              switch (myTypeof(curData)) {
+                case "function":
+                  fn = curData;
+                  break;
+                case "array":
+                  ejsData[key] = [...ejsData[key], ...curData];
+                  break;
+                default:
+                  ejsData[key] += curData;
+                  break;
+              }
+            });
+            return false;
+          default:
+            return true;
+        }
+      }
+    });
+    if (typeof fn === "function") {
+      fn(targetPath, config);
+    }
+  });
+};
+var renderEjs = (allConfig) => {
+  const { targetPath, ejsPath, ejsData } = allConfig;
+  if (!import_fs2.default.existsSync(ejsPath)) {
     return false;
   }
-  const { ejsData } = config;
-  recursionDir(targetPath, (data) => {
+  recursionDir(ejsPath, (data) => {
     const basename = import_path2.default.basename(data.path);
     if (basename === "node_modules") {
       return false;
@@ -8604,7 +8618,7 @@ var renderEjs = (targetPath, newPath, config) => {
         if (err) {
           return;
         }
-        const renderEjsPath = import_path2.default.join(newPath, import_path2.default.relative(targetPath, data.path));
+        const renderEjsPath = import_path2.default.join(targetPath, import_path2.default.relative(ejsPath, data.path));
         let deleteEjsSuffix = renderEjsPath.split(".");
         deleteEjsSuffix.pop();
         import_fs2.default.writeFileSync(deleteEjsSuffix.join("."), str);
@@ -8668,8 +8682,7 @@ var inquiry = async () => {
   promptsResult.projectName = promptsResult.projectName ? promptsResult.projectName : defaultProjectName;
   const config = {
     projectName: promptsResult["projectName"],
-    template: promptsResult["templateName"],
-    ejsVarAilas: "config-text.js",
+    templateName: promptsResult["templateName"],
     options: promptsResult["options"]
   };
   return config;
@@ -8679,8 +8692,8 @@ var inquiry = async () => {
 async function init() {
   let config = await inquiry();
   const templatesRoot = import_path4.default.resolve(__dirname, "./templates");
-  createTemplate(config, templatesRoot, ({ newProjectPath }) => {
-    console.log(`\u521B\u5EFA\u5B8C\u6210,\u65B0\u9879\u76EE\u8DEF\u5F84\u4E3A${newProjectPath}`);
+  createTemplate(config, templatesRoot, ({ targetPath }) => {
+    console.log(`\u521B\u5EFA\u5B8C\u6210,\u65B0\u9879\u76EE\u8DEF\u5F84\u4E3A${targetPath}`);
   });
 }
 init().catch((err) => {

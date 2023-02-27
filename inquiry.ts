@@ -60,8 +60,7 @@ export const inquiry = async (): Promise<configType> => {
 
   const config: configType = {
     projectName: promptsResult['projectName'],
-    template: promptsResult['templateName'],
-    ejsVarAilas: 'config-text.js',
+    templateName: promptsResult['templateName'],
     options: promptsResult['options']
   }
 
