@@ -63,10 +63,7 @@ export function readJsonFile<T>(filename: string): T {
  * @param fn 回调函数
  * @returns
  */
-export function recursionDir(
-  targetPath: string,
-  fn: (data: { path: string; isDir: boolean }) => void
-) {
+export function recursionDir(targetPath: string, fn: (data: { path: string; isDir: boolean }) => void) {
   if (!fs.existsSync(targetPath)) {
     return false
   }
@@ -109,4 +106,15 @@ export const myTypeof = (data: any) => {
     .replace(/\[object\s(.+)\]/, '$1')
     .toLowerCase()
   return dataType
+}
+
+/**
+ * 科里化解决继承父类路径的多个子路径
+ * @param basePath 基础路径
+ * @returns fn
+ */
+export const joinPath = (...basePath: string[]) => {
+  return function (...paths: string[]) {
+    return path.join(...basePath, ...paths)
+  }
 }

@@ -27,3 +27,14 @@ export type configType = {
   // 选项文件夹名列表
   options?: Array<string>
 }
+
+export type allConfigType = {
+  targetPath: string
+  basePath: string
+  optionsPath: string
+  ejsPath: string
+  ejsData: any
+  ejsDataJsAlias: string
+  options: string[]
+  config: configType
+}

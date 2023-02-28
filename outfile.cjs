@@ -8475,6 +8475,11 @@ var myTypeof = (data) => {
   var dataType = toString.call(data).replace(/\[object\s(.+)\]/, "$1").toLowerCase();
   return dataType;
 };
+var joinPath = (...basePath) => {
+  return function(...paths) {
+    return import_path.default.join(...basePath, ...paths);
+  };
+};
 
 // utils/createTemplate.ts
 var import_ejs = __toESM(require_ejs());
@@ -8500,10 +8505,10 @@ var createTemplate = (config, templatesRoot, fn) => {
   config = Object.assign(defaultConfig, config);
   const { projectName: projectName2, dirAlias, templateName, ejsDataJsAlias, options } = config;
   const targetPath = import_path2.default.join(process.cwd(), projectName2);
-  const templatePath = import_path2.default.join(templatesRoot, templateName);
-  const basePath = import_path2.default.join(templatePath, dirAlias.base);
-  const optionsPath = import_path2.default.join(templatePath, dirAlias.options);
-  const ejsPath = import_path2.default.join(templatePath, dirAlias.ejs);
+  const templatePathJoin = joinPath(import_path2.default.join(templatesRoot, templateName));
+  const basePath = templatePathJoin(dirAlias.base);
+  const optionsPath = templatePathJoin(dirAlias.options);
+  const ejsPath = templatePathJoin(dirAlias.ejs);
   const ejsData = {};
   const allConfig = {
     targetPath,
@@ -8519,9 +8524,9 @@ var createTemplate = (config, templatesRoot, fn) => {
   initOptionsEjsData(allConfig);
   renderOptions(allConfig);
   renderEjs(allConfig);
-  endFolw(targetPath);
+  endFolw(allConfig);
   if (typeof fn === "function") {
-    fn({ targetPath, config });
+    fn({ targetPath, config, ejsData });
   }
 };
 var renderBase = (allConfig) => {
@@ -8599,7 +8604,7 @@ var renderOptions = (allConfig) => {
       }
     });
     if (typeof fn === "function") {
-      fn(targetPath, config);
+      fn(allConfig);
     }
   });
 };
@@ -8628,7 +8633,8 @@ var renderEjs = (allConfig) => {
     }
   });
 };
-var endFolw = (targetPath) => {
+var endFolw = (allConfig) => {
+  const { targetPath } = allConfig;
   const RootPackageJsonPath = import_path2.default.join(targetPath, "package.json");
   if (import_fs2.default.existsSync(RootPackageJsonPath)) {
     let _data = readJsonFile(RootPackageJsonPath);
