@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/xuanxiaoqian/create-quick/compare/v1.4.1...v1.5.0) (2023-03-01)
+
+
+### Features
+
+* 新增ejsData.js可以支持数组合并 ([4df026a](https://github.com/xuanxiaoqian/create-quick/commit/4df026a7b51ca4f53796fd7feaa6fa26516f64a7))
+
+
+### Bug Fixes
+
+* 减掉一些渲染函数的文件存在检测防止报错机制,让找不到文件直接保存好排除错误 ([0aad147](https://github.com/xuanxiaoqian/create-quick/commit/0aad1476a6b0d9689b1ca4a5e289973bc41fdf57))
+
 ### [1.4.1](https://github.com/xuanxiaoqian/create-quick/compare/v1.4.0...v1.4.1) (2023-02-17)
 
 
