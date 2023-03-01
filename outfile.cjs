@@ -8565,7 +8565,7 @@ var initOptionsEjsData = (allConfig) => {
   });
 };
 var renderOptions = (allConfig) => {
-  const { options, optionsPath, targetPath, ejsDataJsAlias, ejsData, config } = allConfig;
+  const { options, optionsPath, targetPath, ejsDataJsAlias, ejsData } = allConfig;
   options == null ? void 0 : options.map((item) => {
     const curItemPath = import_path2.default.join(optionsPath, item);
     let fn;

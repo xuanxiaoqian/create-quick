@@ -103,15 +103,11 @@ const initOptionsEjsData = (allConfig: allConfigType) => {
 }
 
 const renderOptions = (allConfig: allConfigType) => {
-  const { options, optionsPath, targetPath, ejsDataJsAlias, ejsData, config } = allConfig
+  const { options, optionsPath, targetPath, ejsDataJsAlias, ejsData } = allConfig
 
   options?.map((item: any) => {
     const curItemPath = path.join(optionsPath, item)
     let fn: Function | any
-
-    if (!fs.existsSync(curItemPath)) {
-      return false
-    }
 
     fse.copySync(curItemPath, targetPath, {
       filter(src, dest) {
