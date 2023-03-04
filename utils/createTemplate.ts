@@ -23,11 +23,11 @@ export const createTemplate = (
 
   const targetPath = path.join(process.cwd(), projectName)
 
-  const templatePathJoin = joinPath(path.join(templatesRoot, templateName))
+  const templateBasePath = joinPath(path.join(templatesRoot, templateName))
 
-  const basePath = templatePathJoin(dirAlias.base)
-  const optionsPath = templatePathJoin(dirAlias.options)
-  const ejsPath = templatePathJoin(dirAlias.ejs)
+  const basePath = templateBasePath(dirAlias.base)
+  const optionsPath = templateBasePath(dirAlias.options)
+  const ejsPath = templateBasePath(dirAlias.ejs)
 
   const ejsData: any = {}
 
@@ -193,7 +193,7 @@ const endFolw = (allConfig: allConfigType) => {
   if (fs.existsSync(RootPackageJsonPath)) {
     let _data: any = readJsonFile(RootPackageJsonPath)
     _data.name = path.basename(targetPath)
-    _data.version = '0.0.0'
+    _data.version = '1.0.0'
     _data.private = _data.private ? false : _data.private
 
     let str = JSON.stringify(_data, null, 2)

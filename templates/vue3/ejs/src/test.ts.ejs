@@ -1,0 +1,14 @@
+import router from '@/router/index' +$router
+import pinia from '@/store/index' +$pinia
+import { createApp } from 'vue'
+import App from './App.vue'
+
+
+import '@/style/reset.css'
+
+const app = createApp(App)
+
+app.use(pinia)  +$pinia
+app.use(router) +$router
+
+app.mount('#app')

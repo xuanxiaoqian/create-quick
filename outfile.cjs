@@ -8569,9 +8569,6 @@ var renderOptions = (allConfig) => {
   options == null ? void 0 : options.map((item) => {
     const curItemPath = import_path2.default.join(optionsPath, item);
     let fn;
-    if (!import_fs2.default.existsSync(curItemPath)) {
-      return false;
-    }
     import_fs_extra.default.copySync(curItemPath, targetPath, {
       filter(src, dest) {
         const basename = import_path2.default.basename(src);

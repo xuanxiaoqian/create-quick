@@ -1,0 +1,36 @@
+import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { AppController } from './app.controller'
+import { AppService } from './app.service'
+import { getConfiguration } from './config/resources/getConfiguration'
+import { SharedModule } from './shared/shared.module'
+import { ArticleModule } from './system/article/article.module'
+import { MyWebSocketModule } from './system/gateway/ws.module'
+import { EventsGateway } from './system/test/test.gateway'
+import { UserModule } from './system/user/user.module'
+
+const libModules = [
+  ConfigModule.forRoot({
+    isGlobal: true,
+    load: [getConfiguration],
+    envFilePath: [`.env.${process.env.NODE_ENV}`],
+  }) +$ConfigModule
+]
+
+const customModules = [
+  SharedModule
+]
+
+@Module({
+  imports: [
+    ...libModules,
+    ...customModules,
+    UserModule,
+    ArticleModule,
+    MyWebSocketModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService, EventsGateway],
+})
+
+export class AppModule { }
