@@ -8505,10 +8505,10 @@ var createTemplate = (config, templatesRoot, fn) => {
   config = Object.assign(defaultConfig, config);
   const { projectName: projectName2, dirAlias, templateName, ejsDataJsAlias, options } = config;
   const targetPath = import_path2.default.join(process.cwd(), projectName2);
-  const templatePathJoin = joinPath(import_path2.default.join(templatesRoot, templateName));
-  const basePath = templatePathJoin(dirAlias.base);
-  const optionsPath = templatePathJoin(dirAlias.options);
-  const ejsPath = templatePathJoin(dirAlias.ejs);
+  const templateBasePath = joinPath(import_path2.default.join(templatesRoot, templateName));
+  const basePath = templateBasePath(dirAlias.base);
+  const optionsPath = templateBasePath(dirAlias.options);
+  const ejsPath = templateBasePath(dirAlias.ejs);
   const ejsData = {};
   const allConfig = {
     targetPath,
@@ -8636,7 +8636,7 @@ var endFolw = (allConfig) => {
   if (import_fs2.default.existsSync(RootPackageJsonPath)) {
     let _data = readJsonFile(RootPackageJsonPath);
     _data.name = import_path2.default.basename(targetPath);
-    _data.version = "0.0.0";
+    _data.version = "1.0.0";
     _data.private = _data.private ? false : _data.private;
     let str = JSON.stringify(_data, null, 2);
     import_fs2.default.writeFileSync(RootPackageJsonPath, str);
