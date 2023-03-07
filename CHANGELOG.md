@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/xuanxiaoqian/create-quick/compare/v1.5.0...v1.6.0) (2023-03-07)
+
+
+### Features
+
+* 一次比较大的更新，修复了Object.assign默认值问题，新增了自动根据文件夹设置询问值的功能，以及划分了配置信息项 ([e4507a9](https://github.com/xuanxiaoqian/create-quick/commit/e4507a97e325333f1067c2eb9af4a4c1f6c7ed27))
+
+
+### Bug Fixes
+
+* 将默认package.json里的版本号从0.0.0改为1.0.0 ([4ce466f](https://github.com/xuanxiaoqian/create-quick/commit/4ce466f75b0aefd6ec25f2e8e03ba1337344307c))
+* 修复提交代码prettier会格式化templates文件夹下面的代码的问题 ([6ddcfb5](https://github.com/xuanxiaoqian/create-quick/commit/6ddcfb500b6dba4fb8ed9f6f380c20203406f050))
+* 修复templatesData.json未定义options属性会报错的问题 ([e5c9559](https://github.com/xuanxiaoqian/create-quick/commit/e5c95591ceac09e17a7bdaecd87840088727a0ac))
+
 ## [1.5.0](https://github.com/xuanxiaoqian/create-quick/compare/v1.4.1...v1.5.0) (2023-03-01)
 
 
