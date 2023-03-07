@@ -25,7 +25,7 @@ const handleOptions = (data: any) => {
   options.push(obj)
 
   options.push({
-    type: (prev: any) => (data[prev]['options'].length > 1 ? 'multiselect' : null),
+    type: (prev: any) => (data[prev]['options']?.length > 1 ? 'multiselect' : null),
     name: 'options',
     message: 'Pick options',
     choices: (prev: any) => data[prev]['options']
@@ -54,9 +54,7 @@ export const inquiry = async (): Promise<configType> => {
     options: Array<string>
   }
 
-  promptsResult.projectName = promptsResult.projectName
-    ? promptsResult.projectName
-    : defaultProjectName
+  promptsResult.projectName = promptsResult.projectName ? promptsResult.projectName : defaultProjectName
 
   const config: configType = {
     projectName: promptsResult['projectName'],

@@ -8662,7 +8662,10 @@ var handleOptions = (data) => {
   });
   options.push(obj);
   options.push({
-    type: (prev) => data[prev]["options"].length > 1 ? "multiselect" : null,
+    type: (prev) => {
+      var _a;
+      return ((_a = data[prev]["options"]) == null ? void 0 : _a.length) > 1 ? "multiselect" : null;
+    },
     name: "options",
     message: "Pick options",
     choices: (prev) => data[prev]["options"]
