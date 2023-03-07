@@ -4,15 +4,17 @@
     "options": [
       {
         "title": "pinia状态管理",
-        "value": "pinia"
+        "value": "pinia",
+        "selected": true
+      },
+      {
+        "title": "vue-router路由",
+        "value": "vue-router",
+        "selected": true
       },
       {
         "title": "prettier格式化",
         "value": "prettier"
-      },
-      {
-        "title": "vue-router路由",
-        "value": "vue-router"
       }
     ]
   },
