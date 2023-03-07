@@ -8,10 +8,13 @@ export type configType = {
   // 项目名
   projectName: string
 
-  // 模板名
+  // 模板地址
+  templatesRoot: string
+
+  // 项目模板名
   templateName: string
 
-  // 模板详细文件夹别名
+  // 项目模板详细文件夹别名
   dirAlias?: {
     // 基础文件夹
     base?: string

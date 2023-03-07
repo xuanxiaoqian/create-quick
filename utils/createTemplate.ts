@@ -2,7 +2,7 @@ import ejs from 'ejs'
 import fs from 'fs'
 import fse from 'fs-extra'
 import path from 'path'
-import { joinPath, mergePackage, myTypeof, readJsonFile, recursionDir } from './common'
+import { deepAssign, joinPath, mergePackage, myTypeof, readJsonFile, recursionDir } from './common'
 import { defaultConfig } from './defaultConfig'
 import { allConfigType, configType, configTypeDeepRequired } from './types'
 
@@ -14,12 +14,12 @@ import { allConfigType, configType, configTypeDeepRequired } from './types'
  */
 export const createTemplate = (
   config: configType,
-  templatesRoot: string,
   fn?: (data: { targetPath: string; config: configType; ejsData: Object & any }) => void
 ) => {
-  config = Object.assign(defaultConfig, config)
+  config = deepAssign(defaultConfig, config)
 
-  const { projectName, dirAlias, templateName, ejsDataJsAlias, options } = config as configTypeDeepRequired
+  const { projectName, templatesRoot, dirAlias, templateName, ejsDataJsAlias, options } =
+    config as configTypeDeepRequired
 
   const targetPath = path.join(process.cwd(), projectName)
 

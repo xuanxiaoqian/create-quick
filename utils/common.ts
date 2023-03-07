@@ -118,3 +118,29 @@ export const joinPath = (...basePath: string[]) => {
     return path.join(...basePath, ...paths)
   }
 }
+
+/**
+ * 解决Object.assign深度对象覆盖问题
+ * @param defaultObject 被覆盖的值
+ * @param targetObject 目标值
+ * @returns 合并后的值
+ */
+export const deepAssign = (defaultObject: any, targetObject: any) => {
+  defaultObject = Object.assign({}, defaultObject)
+
+  Object.keys(targetObject).forEach((v) => {
+    switch (myTypeof(targetObject[v])) {
+      case 'object':
+        defaultObject[v] = deepAssign(defaultObject[v], targetObject[v])
+        break
+      case 'array':
+        defaultObject[v] = [...defaultObject[v], ...targetObject[v]]
+        break
+      default:
+        defaultObject[v] = targetObject[v]
+        break
+    }
+  })
+
+  return defaultObject
+}
