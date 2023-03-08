@@ -7,7 +7,7 @@ import { defaultConfig } from './utils/defaultConfig'
 
 const argv = minimist(process.argv.slice(2), { string: ['_'] })
 let projectName = argv._[0]
-let defaultProjectName = projectName ? projectName : 'test-project'
+let defaultProjectName = projectName ?? 'test-project'
 
 const autoImport = (defaultConfig: configTypeDeepRequired) => {
   const { templatesRoot, dirAlias } = defaultConfig
@@ -19,8 +19,10 @@ const autoImport = (defaultConfig: configTypeDeepRequired) => {
     templatesData[value] = { title: value }
     templatesData[value]['options'] = []
 
-    if (fs.existsSync(path.join(templatesRoot, value, dirAlias.options))) {
-      fs.readdirSync(path.join(templatesRoot, value, dirAlias.options)).forEach((v2) => {
+    const optionsPath = path.join(templatesRoot, value, dirAlias.options)
+
+    if (fs.existsSync(optionsPath)) {
+      fs.readdirSync(optionsPath).forEach((v2) => {
         templatesData[value]['options'].push({
           title: v2,
           value: v2
@@ -33,13 +35,9 @@ const autoImport = (defaultConfig: configTypeDeepRequired) => {
 }
 
 const handleOptions = (autoLoad: boolean, defaultConfig: configTypeDeepRequired) => {
-  let data: Object | any
-
-  if (autoLoad) {
-    data = autoImport(defaultConfig)
-  } else {
-    data = readJsonFile(path.join(__dirname, './templatesData.json'))
-  }
+  let data: Object | any = autoLoad
+    ? autoImport(defaultConfig)
+    : readJsonFile(path.join(__dirname, './templatesData.json'))
 
   const options = []
 
@@ -91,7 +89,7 @@ export const inquiry = async (autoLoad: boolean = false): Promise<configType> =>
     options: Array<string>
   }
 
-  promptsResult.projectName = promptsResult.projectName ? promptsResult.projectName : defaultProjectName
+  promptsResult.projectName = promptsResult.projectName ?? defaultProjectName
 
   const config: configType = deepAssign(initConfig, {
     projectName: promptsResult['projectName'],

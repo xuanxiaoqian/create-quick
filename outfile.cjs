@@ -8662,7 +8662,7 @@ var endFolw = (allConfig) => {
 // inquiry.ts
 var argv = (0, import_minimist.default)(process.argv.slice(2), { string: ["_"] });
 var projectName = argv._[0];
-var defaultProjectName = projectName ? projectName : "test-project";
+var defaultProjectName = projectName ?? "test-project";
 var autoImport = (defaultConfig2) => {
   const { templatesRoot, dirAlias } = defaultConfig2;
   const templatesData = {};
@@ -8682,12 +8682,7 @@ var autoImport = (defaultConfig2) => {
   return templatesData;
 };
 var handleOptions = (autoLoad, defaultConfig2) => {
-  let data;
-  if (autoLoad) {
-    data = autoImport(defaultConfig2);
-  } else {
-    data = readJsonFile(import_path3.default.join(__dirname, "./templatesData.json"));
-  }
+  let data = autoLoad ? autoImport(defaultConfig2) : readJsonFile(import_path3.default.join(__dirname, "./templatesData.json"));
   const options = [];
   let obj = {
     type: "select",
@@ -8729,7 +8724,7 @@ var inquiry = async (autoLoad = false) => {
     ...promptsOptions
   ];
   let promptsResult = await (0, import_prompts.default)(promptsArray);
-  promptsResult.projectName = promptsResult.projectName ? promptsResult.projectName : defaultProjectName;
+  promptsResult.projectName = promptsResult.projectName ?? defaultProjectName;
   const config = deepAssign(initConfig, {
     projectName: promptsResult["projectName"],
     templateName: promptsResult["templateName"],
