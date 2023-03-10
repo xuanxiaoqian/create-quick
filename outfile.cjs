@@ -8525,16 +8525,15 @@ var createTemplate = (config, fn) => {
   const basePath = templateBasePath(dirAlias.base);
   const optionsPath = templateBasePath(dirAlias.options);
   const ejsPath = templateBasePath(dirAlias.ejs);
-  const ejsData = {};
   const allConfig = {
     targetPath,
     basePath,
     optionsPath,
     ejsPath,
-    ejsData,
     ejsDataJsAlias,
     options,
-    config
+    config,
+    ejsData: {}
   };
   renderBase(allConfig);
   initOptionsEjsData(allConfig);
@@ -8542,7 +8541,7 @@ var createTemplate = (config, fn) => {
   renderEjs(allConfig);
   endFolw(allConfig);
   if (typeof fn === "function") {
-    fn({ targetPath, config, ejsData });
+    fn(allConfig);
   }
 };
 var renderBase = (allConfig) => {
@@ -8670,8 +8669,9 @@ var autoImport = (defaultConfig2) => {
   projectNames.forEach((value) => {
     templatesData[value] = { title: value };
     templatesData[value]["options"] = [];
-    if (import_fs3.default.existsSync(import_path3.default.join(templatesRoot, value, dirAlias.options))) {
-      import_fs3.default.readdirSync(import_path3.default.join(templatesRoot, value, dirAlias.options)).forEach((v2) => {
+    const optionsPath = import_path3.default.join(templatesRoot, value, dirAlias.options);
+    if (import_fs3.default.existsSync(optionsPath)) {
+      import_fs3.default.readdirSync(optionsPath).forEach((v2) => {
         templatesData[value]["options"].push({
           title: v2,
           value: v2

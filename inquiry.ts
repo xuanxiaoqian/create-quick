@@ -35,9 +35,7 @@ const autoImport = (defaultConfig: configTypeDeepRequired) => {
 }
 
 const handleOptions = (autoLoad: boolean, defaultConfig: configTypeDeepRequired) => {
-  let data: Object | any = autoLoad
-    ? autoImport(defaultConfig)
-    : readJsonFile(path.join(__dirname, './templatesData.json'))
+  let data: any = autoLoad ? autoImport(defaultConfig) : readJsonFile(path.join(__dirname, './templatesData.json'))
 
   const options = []
 

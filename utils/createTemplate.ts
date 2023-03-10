@@ -12,34 +12,28 @@ import { allConfigType, configType, configTypeDeepRequired } from './types'
  * @param templatesRoot 模板位置
  * @param fn 执行完成的回调函数
  */
-export const createTemplate = (
-  config: configType,
-  fn?: (data: { targetPath: string; config: configType; ejsData: Object & any }) => void
-) => {
+export const createTemplate = (config: configType, fn?: (data: allConfigType) => void) => {
   config = deepAssign(defaultConfig, config)
 
   const { projectName, templatesRoot, dirAlias, templateName, ejsDataJsAlias, options } =
     config as configTypeDeepRequired
 
   const targetPath = path.join(process.cwd(), projectName)
-
   const templateBasePath = joinPath(path.join(templatesRoot, templateName))
 
   const basePath = templateBasePath(dirAlias.base)
   const optionsPath = templateBasePath(dirAlias.options)
   const ejsPath = templateBasePath(dirAlias.ejs)
 
-  const ejsData: any = {}
-
   const allConfig = {
     targetPath,
     basePath,
     optionsPath,
     ejsPath,
-    ejsData,
     ejsDataJsAlias,
     options,
-    config
+    config,
+    ejsData: {}
   }
 
   renderBase(allConfig)
@@ -53,7 +47,7 @@ export const createTemplate = (
   endFolw(allConfig)
 
   if (typeof fn === 'function') {
-    fn({ targetPath, config, ejsData })
+    fn(allConfig)
   }
 }
 
