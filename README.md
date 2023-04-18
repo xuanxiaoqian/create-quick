@@ -37,6 +37,17 @@ npx create-quick
 
 
 
+## 案例
+
+提供一个自用的脚手架，基于`create-quick`开发，你们可以参照这个来理解更详细的参数。
+
+<p>
+  <a target="_blank" href="https://gitee.com/xuanxiaoqian/create-xuanxiaoqian"> create-xuanxiaoqian</a>
+  &nbsp;
+</p>
+
+
+
 ## 使用
 
 如果我们只需要使用这个仓库快速创建脚手架，我们只需要关心`templates`文件夹。
