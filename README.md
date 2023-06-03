@@ -2,9 +2,10 @@
 <p align="center">约定代替编码，更灵活、迅速的脚手架搭建工具</p>
 
 <p align="center">
-  <a target="_blank" href="">文档网站（暂无）</a>
+  <a target="_blank" href="https://xuanxiaoqian.com/open-source/create-quick.html">项目历程</a>
   &nbsp;
 </p>
+
 
 
 ---
@@ -46,6 +47,8 @@ npx create-quick
   &nbsp;
 </p>
 
+
+<br />
 
 
 ## 使用
@@ -164,6 +167,10 @@ renderTemplate下面有三个文件夹 `base`、`ejs`、`options`
 
 
 TODO：修改渲染代码，`ejsData.js`里的回调函数数据不全、文档未完善
+
+
+
+TODO2: 2023/6/4 options只有一个可选项的时候会跳过选择、给可选文件夹加关键字然后就可以自动选中、项目中断创建还是会导致创建
 
 
 
